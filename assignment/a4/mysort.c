@@ -6,12 +6,13 @@
 
 void select_sort(float *a[], int left, int right)
 {
+
     int i, j, k;
     float *temp;
-    for (i = 0; i < n; ++i)
+    for (i = 0; i < right + 1; ++i)
     {
         k = i;
-        for (j = i + 1; j < n; ++j)
+        for (j = i + 1; j < right + 1; ++j)
         {
             if (*a[j] < *a[k])
             {
@@ -27,9 +28,37 @@ void select_sort(float *a[], int left, int right)
         }
     }
 }
-}
 
 void quick_sort(float *a[], int left, int right)
 {
-    // your implementation
+    int i, j;
+    float key, *temp;
+    if (left < right)
+    {
+        key = *a[left];
+        i = left + 1;
+        j = right;
+        while (i <= j)
+        {
+            while (i <= right && *a[i] <= key)
+                i++;
+            while (j >= left && *a[j] > key)
+                j--;
+            if (i < j)
+            { // swap a[i] and a[j]; }
+                temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+            else
+            {
+                // swap a[left] and a[j];
+                temp = a[left];
+                a[left] = a[j];
+                a[j] = temp;
+            }
+        }
+        quick_sort(a, left, j - 1);
+        quick_sort(a, j + 1, right);
+    }
 }
