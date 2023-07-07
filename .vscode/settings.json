@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "stdio.h": "c",
-    "fibonacci.h": "c"
+    "fibonacci.h": "c",
+    "typeinfo": "c"
   }
 }
