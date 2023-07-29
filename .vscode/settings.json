@@ -2,6 +2,10 @@
   "files.associations": {
     "stdio.h": "c",
     "fibonacci.h": "c",
-    "typeinfo": "c"
+    "typeinfo": "c",
+    "cmath": "c",
+    "exception": "c",
+    "type_traits": "c",
+    "limits": "c"
   }
 }
