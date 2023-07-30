@@ -109,7 +109,7 @@ HNODE extract_min(HEAP *heap)
     heap->size--;
     heapify_down(heap, 0);
 
-    if (heap->size <= heap->capacity * 0.25)
+    if (heap->size <= heap->capacity * 0.25 && heap->capacity > MIN_CAPACITY)
     {
         heap->capacity /= 2;
         void *temp = realloc(heap->hna, sizeof(HNODE) * heap->capacity);

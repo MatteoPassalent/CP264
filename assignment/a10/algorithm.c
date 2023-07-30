@@ -140,4 +140,75 @@ EDGELIST *spt_dijkstra(GRAPH *g, int start)
 EDGELIST *sp_dijkstra(GRAPH *g, int start, int end)
 {
     // your implementation
+    if (!g)
+        return NULL;
+
+    int i, heapindex, n = g->order, T[n], label[n], parent[n];
+    EDGELIST *spt = new_edgelist();
+    HEAP *h = new_heap(4);
+    HNODE hn;
+
+    for (i = 0; i < n; i++)
+    {
+        T[i] = 0;
+        label[i] = INFINITY;
+        parent[i] = -1;
+    }
+
+    ADJNODE *temp = g->nodes[start]->neighbor;
+    label[start] = 0;
+    T[start] = 1;
+
+    while (temp)
+    {
+        hn.key = temp->weight + label[start];
+        hn.data = temp->nid;
+        insert(h, hn);
+        parent[temp->nid] = start;
+        temp = temp->next;
+    }
+
+    while (h->size > 0)
+    {
+        hn = extract_min(h);
+        i = hn.data;
+        T[i] = 1;
+        label[i] = hn.key;
+        if (i == end)
+            break;
+
+        temp = g->nodes[i]->neighbor;
+        while (temp)
+        {
+            heapindex = find_data_index(h, temp->nid);
+            if (heapindex >= 0)
+            {
+                if (T[temp->nid] == 0 && temp->weight + label[i] < h->hna[heapindex].key)
+                {
+                    change_key(h, heapindex, temp->weight + label[i]);
+                    parent[temp->nid] = i;
+                }
+            }
+            else
+            {
+                if (T[temp->nid] == 0)
+                {
+                    hn.key = temp->weight + label[i];
+                    hn.data = temp->nid;
+                    insert(h, hn);
+                    parent[temp->nid] = i;
+                }
+            }
+            temp = temp->next;
+        }
+    }
+    i = end;
+    while (1)
+    {
+        if (i == start)
+            break;
+        add_edge_start(spt, parent[i], i, label[i] - label[parent[i]]);
+        i = parent[i];
+    }
+    return spt;
 }
